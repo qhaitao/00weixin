@@ -6,14 +6,14 @@
 
 ## 快速导航
 
-| 步骤 | 动作 | 触发方式 |
-|------|------|----------|
-| 0 | 输入素材（YouTube/URL/本地文件/关键词） | `/input-processor` |
-| 1 | 准备 workspace 目录 + 放入素材 | 手动操作 |
-| 2 | 内容分析 → analysis.json | `/content-analyzer` |
-| 3 | 生成草稿骨架 | `/article-writer` |
-| 4 | [Agent AI] 写正文 | 自动触发 |
-| 5 | Review + 配图（可选）+ 发布 | `/baoyu-post-to-wechat` |
+| 步骤 | 动作                                    | 触发方式                  |
+| ---- | --------------------------------------- | ------------------------- |
+| 0    | 输入素材（YouTube/URL/本地文件/关键词） | `/input-processor`      |
+| 1    | 准备 workspace 目录 + 放入素材          | 手动操作                  |
+| 2    | 内容分析 → analysis.json               | `/content-analyzer`     |
+| 3    | 生成草稿骨架                            | `/article-writer`       |
+| 4    | [Agent AI] 写正文                       | 自动触发                  |
+| 5    | Review + 配图（可选）+ 发布             | `/baoyu-post-to-wechat` |
 
 ---
 
@@ -42,6 +42,7 @@ npm install
 微信 API 凭证存放于 `.baoyu-skills/.env`（已加入 `.gitignore`，不会上传 GitHub）。
 
 **获取凭证步骤**：
+
 1. 登录 [mp.weixin.qq.com](https://mp.weixin.qq.com)
 2. 进入 **开发 → 基本配置**
 3. 复制 `AppID` 和 `AppSecret`（需要扫码验证）
@@ -64,6 +65,7 @@ OPENAI_API_KEY=             # 用于 baoyu-imagine（DALL·E）
 ```
 
 **⚠️ IP 白名单**：微信 API 要求调用方 IP 在白名单。如报 `access_token` 或 IP 错误，需：
+
 - 进入 **开发 → 基本配置 → IP 白名单**
 - 添加本机公网 IP（可访问 [myip.la](https://myip.la) 查询）
 
@@ -128,14 +130,15 @@ New-Item -ItemType Directory "workspace\20260410主题名\imgs" -Force
 
 将素材文件放入 `source\` 目录：
 
-| 素材类型 | 建议文件名 | 来源 |
-|---------|-----------|------|
-| 视频字幕/转录 | `transcript.md` | YouTube 字幕导出、录音转写 |
-| 参考文章 | `references.md` | 网页正文、PDF 摘录 |
-| 写作方向/主题 | `topic.md` | 自己归纳的核心议题 |
-| 其他素材 | 任意 `.md`/`.txt` | 笔记、摘录等 |
+| 素材类型      | 建议文件名            | 来源                       |
+| ------------- | --------------------- | -------------------------- |
+| 视频字幕/转录 | `transcript.md`     | YouTube 字幕导出、录音转写 |
+| 参考文章      | `references.md`     | 网页正文、PDF 摘录         |
+| 写作方向/主题 | `topic.md`          | 自己归纳的核心议题         |
+| 其他素材      | 任意 `.md`/`.txt` | 笔记、摘录等               |
 
 **注意事项**：
+
 - 以 `_` 开头的文件（如 `_notes.md`）会被跳过，可用于存放不纳入分析的草稿
 - 支持多个素材文件，content-analyzer 会自动合并读取
 - 单文件超过 8000 字会触发"长文本分段处理"模式
@@ -154,10 +157,10 @@ bun "baoyu-skills\skills\00content-analyzer\scripts\main.ts" --dir "workspace\20
 
 **执行结果**：
 
-| 文件 | 说明 |
-|------|------|
+| 文件                                                  | 说明                          |
+| ----------------------------------------------------- | ----------------------------- |
 | `workspace\20260410主题名\_analysis_instruction.md` | AI 分析指令（Agent 读取执行） |
-| `workspace\20260410主题名\analysis.json` | 空模板，等待 Agent 填充 |
+| `workspace\20260410主题名\analysis.json`            | 空模板，等待 Agent 填充       |
 
 **Agent 填充后的 analysis.json 格式**：
 
@@ -199,13 +202,13 @@ bun "baoyu-skills\skills\00article-writer\scripts\main.ts" --dir "workspace\2026
 
 **执行结果**：
 
-| 文件 | 说明 |
-|------|------|
-| `draft.md` | 文章骨架（标题 + 各节占位符） |
-| `_write_instruction.md` | 写作指令（Agent 读取执行） |
-| `prompts/01-xxx.md` | 第1个配图提示词 |
-| `prompts/02-xxx.md` | 第2个配图提示词 |
-| `prompts/03-xxx.md` | 第3个配图提示词（`IMG_PER_ARTICLE=3` 时） |
+| 文件                      | 说明                                        |
+| ------------------------- | ------------------------------------------- |
+| `draft.md`              | 文章骨架（标题 + 各节占位符）               |
+| `_write_instruction.md` | 写作指令（Agent 读取执行）                  |
+| `prompts/01-xxx.md`     | 第1个配图提示词                             |
+| `prompts/02-xxx.md`     | 第2个配图提示词                             |
+| `prompts/03-xxx.md`     | 第3个配图提示词（`IMG_PER_ARTICLE=3` 时） |
 
 ---
 
@@ -214,9 +217,11 @@ bun "baoyu-skills\skills\00article-writer\scripts\main.ts" --dir "workspace\2026
 Agent AI 读取 `_write_instruction.md`，补全 `draft.md` 中每个 `<!-- 请在此展开论述 -->` 占位符。
 
 **直接对话触发**（在 00weixin 目录下）：
-> "读取 `workspace/20260410主题名/_write_instruction.md`，補全 draft.md"
+
+> "读取 `workspace/20260410主题名/_write_instruction.md`，补全 draft.md"
 
 **写作质量要求**（写作指令中包含）：
+
 - **有料**：每节至少引用一个具体数据或案例
 - **有用**：给读者可执行的行动建议
 - **有洞见**：触达问题本质，不写表面现象
@@ -259,8 +264,9 @@ bun "baoyu-skills\skills\baoyu-imagine\scripts\main.ts" `
 ```
 
 **⚠️ 封面图必须手动提供** — 脚本无法自动生成封面：
+
 - 路径：`workspace\20260410主题名\imgs\cover.png`
-- 尺寸：**1280×720**（16:9）或 900×383（微信传统规格）
+- 尺寸：**1680×720**（21:9）或 900×383（微信传统规格）
 - 来源：AI 生图工具（Midjourney、Stable Diffusion、Gemini）、Canva 设计、Unsplash 图库
 
 ---
@@ -309,6 +315,7 @@ bun "baoyu-skills\skills\baoyu-post-to-wechat\scripts\wechat-article.ts" `
 ```
 
 **发布后**：
+
 1. 登录 [mp.weixin.qq.com](https://mp.weixin.qq.com)
 2. 进入 **内容管理 → 草稿箱**
 3. 预览确认 → 点击"发布"
@@ -355,17 +362,17 @@ bun "baoyu-skills\skills\baoyu-translate\scripts\main.ts" `
 
 ## 四、Workflow 触发词速查
 
-| 对话触发词 | 对应 Skill | 功能 |
-|-----------|-----------|------|
-| `/input-processor`、"处理输入" | `00input-processor` | 处理 YouTube/URL/关键词 |
-| `/content-analyzer`、"分析素材" | `00content-analyzer` | 素材分析 → analysis.json |
-| `/article-writer`、"写文章"、"生成草稿" | `00article-writer` | 生成草稿 + 配图提示词 |
-| `/baoyu-post-to-wechat`、"发公众号" | `baoyu-post-to-wechat` | 发布到微信草稿箱 |
-| `/baoyu-markdown-to-html`、"md 转 html" | `baoyu-markdown-to-html` | MD → 微信样式 HTML |
-| `/baoyu-imagine`、"生成图片" | `baoyu-imagine` | AI 图像生成 |
-| `/baoyu-format-markdown`、"格式化文章" | `baoyu-format-markdown` | 修复 MD 格式问题 |
-| `/baoyu-translate`、"翻译文章" | `baoyu-translate` | 文章翻译 |
-| `/baoyu-cover-image`、"生成封面" | `baoyu-cover-image` | 生成封面图（1280×720） |
+| 对话触发词                                | 对应 Skill                 | 功能                      |
+| ----------------------------------------- | -------------------------- | ------------------------- |
+| `/input-processor`、"处理输入"          | `00input-processor`      | 处理 YouTube/URL/关键词   |
+| `/content-analyzer`、"分析素材"         | `00content-analyzer`     | 素材分析 → analysis.json |
+| `/article-writer`、"写文章"、"生成草稿" | `00article-writer`       | 生成草稿 + 配图提示词     |
+| `/baoyu-post-to-wechat`、"发公众号"     | `baoyu-post-to-wechat`   | 发布到微信草稿箱          |
+| `/baoyu-markdown-to-html`、"md 转 html" | `baoyu-markdown-to-html` | MD → 微信样式 HTML       |
+| `/baoyu-imagine`、"生成图片"            | `baoyu-imagine`          | AI 图像生成               |
+| `/baoyu-format-markdown`、"格式化文章"  | `baoyu-format-markdown`  | 修复 MD 格式问题          |
+| `/baoyu-translate`、"翻译文章"          | `baoyu-translate`        | 文章翻译                  |
+| `/baoyu-cover-image`、"生成封面"        | `baoyu-cover-image`      | 生成封面图（1280×720）   |
 
 ---
 
@@ -375,30 +382,30 @@ bun "baoyu-skills\skills\baoyu-translate\scripts\main.ts" `
 
 ### 主题
 
-| 主题名 | 风格描述 |
-|--------|---------|
-| `default` | 经典 — 居中标题+下划线，H2 白字色底背景 |
-| `grace` | 优雅 — 文字阴影，圆角卡片，精致引用块 |
-| `simple` | 极简 — 现代简约，不对称圆角，大量留白 |
-| `modern` | 现代 — 大圆角，胶囊型标题，宽松行高（搭配 `--color red` 呈现中式红金风） |
+| 主题名      | 风格描述                                                                    |
+| ----------- | --------------------------------------------------------------------------- |
+| `default` | 经典 — 居中标题+下划线，H2 白字色底背景                                    |
+| `grace`   | 优雅 — 文字阴影，圆角卡片，精致引用块                                      |
+| `simple`  | 极简 — 现代简约，不对称圆角，大量留白                                      |
+| `modern`  | 现代 — 大圆角，胶囊型标题，宽松行高（搭配 `--color red` 呈现中式红金风） |
 
 ### 颜色预设
 
-| 名称 | 色值 | 中文名 |
-|------|------|--------|
-| `blue` | #0F4C81 | 经典蓝 |
-| `green` | #009874 | 翠绿 |
-| `vermilion` | #FA5151 | 朱砂红 |
-| `yellow` | #FECE00 | 柠檬黄 |
-| `purple` | #92617E | 薰衣草紫 |
-| `sky` | #55C9EA | 天空蓝 |
-| `rose` | #B76E79 | 玫瑰金 |
-| `olive` | #556B2F | 橄榄绿 |
-| `black` | #333333 | 石墨黑 |
-| `gray` | #A9A9A9 | 烟灰 |
-| `pink` | #FFB7C5 | 樱花粉 |
-| `red` | #A93226 | 中国红 |
-| `orange` | #D97757 | 暖橙（modern 主题默认色） |
+| 名称          | 色值    | 中文名                    |
+| ------------- | ------- | ------------------------- |
+| `blue`      | #0F4C81 | 经典蓝                    |
+| `green`     | #009874 | 翠绿                      |
+| `vermilion` | #FA5151 | 朱砂红                    |
+| `yellow`    | #FECE00 | 柠檬黄                    |
+| `purple`    | #92617E | 薰衣草紫                  |
+| `sky`       | #55C9EA | 天空蓝                    |
+| `rose`      | #B76E79 | 玫瑰金                    |
+| `olive`     | #556B2F | 橄榄绿                    |
+| `black`     | #333333 | 石墨黑                    |
+| `gray`      | #A9A9A9 | 烟灰                      |
+| `pink`      | #FFB7C5 | 樱花粉                    |
+| `red`       | #A93226 | 中国红                    |
+| `orange`    | #D97757 | 暖橙（modern 主题默认色） |
 
 也可直接传 hex 值：`--color "#1A6B3C"`
 
@@ -406,18 +413,18 @@ bun "baoyu-skills\skills\baoyu-translate\scripts\main.ts" `
 
 ## 六、常见问题排查
 
-| 报错 / 问题 | 原因 | 解决方案 |
-|------------|------|---------|
-| `ENOENT: source/` | source/ 目录不存在 | 创建 `workspace\YYYYMMDD\source\` 并放入素材 |
-| `article-writer 报 analysis.json 不完整` | Agent 未填写 analysis.json | 让 Agent 读取 `_analysis_instruction.md` 并填写 |
-| `No cover image` | 缺封面图 | 在 `imgs\cover.png` 放 1280x720 封面图 |
-| `access_token 错误` | API 凭证无效/过期 | 检查 `.baoyu-skills\.env` 中的 `WECHAT_APP_ID` / `WECHAT_APP_SECRET` |
-| `IP 不在白名单` | 微信 API IP 限制 | 微信后台 → 开发 → 基本配置 → IP 白名单，添加本机公网 IP |
-| `bun: command not found` | Bun 未安装 | `npm install -g bun` |
-| 生图失败 | 缺 API Key | 在 `.baoyu-skills\.env` 配置 `GOOGLE_API_KEY` 或 `OPENAI_API_KEY` |
-| `analysis.json is null` | 文件存在但 JSON 格式错误 | Agent 重新填写 analysis.json，确保 JSON 合法 |
-| Chrome 找不到（浏览器发布） | Chrome 未安装或路径不对 | 安装 Chrome，或设置环境变量 `WECHAT_BROWSER_CHROME_PATH` |
-| 发布内容中图片不显示 | 图片路径相对错误 | 确认 `imgs/` 目录存在且 `draft.md` 中的图片路径正确 |
+| 报错 / 问题                                | 原因                       | 解决方案                                                                   |
+| ------------------------------------------ | -------------------------- | -------------------------------------------------------------------------- |
+| `ENOENT: source/`                        | source/ 目录不存在         | 创建 `workspace\YYYYMMDD\source\` 并放入素材                             |
+| `article-writer 报 analysis.json 不完整` | Agent 未填写 analysis.json | 让 Agent 读取 `_analysis_instruction.md` 并填写                          |
+| `No cover image`                         | 缺封面图                   | 在 `imgs\cover.png` 放 1280x720 封面图                                   |
+| `access_token 错误`                      | API 凭证无效/过期          | 检查 `.baoyu-skills\.env` 中的 `WECHAT_APP_ID` / `WECHAT_APP_SECRET` |
+| `IP 不在白名单`                          | 微信 API IP 限制           | 微信后台 → 开发 → 基本配置 → IP 白名单，添加本机公网 IP                 |
+| `bun: command not found`                 | Bun 未安装                 | `npm install -g bun`                                                     |
+| 生图失败                                   | 缺 API Key                 | 在 `.baoyu-skills\.env` 配置 `GOOGLE_API_KEY` 或 `OPENAI_API_KEY`    |
+| `analysis.json is null`                  | 文件存在但 JSON 格式错误   | Agent 重新填写 analysis.json，确保 JSON 合法                               |
+| Chrome 找不到（浏览器发布）                | Chrome 未安装或路径不对    | 安装 Chrome，或设置环境变量 `WECHAT_BROWSER_CHROME_PATH`                 |
+| 发布内容中图片不显示                       | 图片路径相对错误           | 确认 `imgs/` 目录存在且 `draft.md` 中的图片路径正确                    |
 
 ---
 
