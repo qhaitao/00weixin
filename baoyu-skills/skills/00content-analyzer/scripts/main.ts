@@ -1,22 +1,10 @@
 import { parseCli, log } from "../../../shared/cli";
 import { readText, writeJson, workspacePaths } from "../../../shared/fs";
 import { env } from "../../../shared/env";
+import type { Analysis } from "../../../shared/types";
 import { resolve } from "path";
 import { readdirSync } from "fs";
 
-interface Analysis {
-  topic: string;
-  source_type: string;
-  key_points: string[];
-  insights: string[];
-  data_facts: string[];
-  suggested_structure: {
-    title: string;
-    sections: string[];
-  };
-  word_count_target: number;
-  references: string[];
-}
 
 async function collectSources(sourceDir: string, verbose: boolean): Promise<string> {
   const files = readdirSync(sourceDir).filter(

@@ -20,6 +20,8 @@ import { existsSync } from "fs";
 export interface WorkspacePaths {
   root: string;
   source: string;
+  transcript: string;   // source/transcript.md（视频字幕/转录）
+  references: string;   // source/references.md（参考资料）
   analysis: string;
   draft: string;
   imgs: string;
@@ -31,12 +33,14 @@ export function workspacePaths(dir: string): WorkspacePaths {
   const root = resolve(dir);
   return {
     root,
-    source:   join(root, "source"),
-    analysis: join(root, "analysis.json"),
-    draft:    join(root, "draft.md"),
-    imgs:     join(root, "imgs"),
-    cover:    join(root, "imgs", "cover.png"),
-    prompts:  join(root, "prompts"),
+    source:     join(root, "source"),
+    transcript: join(root, "source", "transcript.md"),
+    references: join(root, "source", "references.md"),
+    analysis:   join(root, "analysis.json"),
+    draft:      join(root, "draft.md"),
+    imgs:       join(root, "imgs"),
+    cover:      join(root, "imgs", "cover.png"),
+    prompts:    join(root, "prompts"),
   };
 }
 

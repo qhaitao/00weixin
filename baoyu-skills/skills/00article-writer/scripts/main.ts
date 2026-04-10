@@ -10,21 +10,10 @@
 import { parseCli, log } from "../../../shared/cli";
 import { readJson, writeText, ensureDir, workspacePaths } from "../../../shared/fs";
 import { env } from "../../../shared/env";
+import type { Analysis } from "../../../shared/types";
+import { validateAnalysis } from "../../../shared/types";
 import { resolve } from "path";
 
-interface Analysis {
-  topic: string;
-  source_type: string;
-  key_points: string[];
-  insights: string[];
-  data_facts: string[];
-  suggested_structure: {
-    title: string;
-    sections: string[];
-  };
-  word_count_target: number;
-  references: string[];
-}
 
 // 为每个章节生成配图提示词
 function buildImagePrompt(
@@ -84,8 +73,10 @@ async function main() {
     process.exit(1);
   }
 
-  if (!analysis.topic || analysis.key_points.length === 0) {
-    console.error("错误：analysis.json 内容不完整（topic 或 key_points 为空），请重新执行 content-analyzer");
+  const errors = validateAnalysis(analysis);
+  if (errors.length) {
+    console.error("❌ analysis.json 不完整，请重新执行 content-analyzer 并由 Agent 填写：");
+    errors.forEach((e) => console.error(`   - ${e}`));
     process.exit(1);
   }
 
@@ -119,7 +110,8 @@ async function main() {
   console.log(`📄 草稿骨架已生成: ${paths.draft}`);
 
   // ── Step 2: 为每个需要配图的节生成提示词文件 ──
-  ensureDir(paths.prompts);
+  await ensureDir(paths.prompts);
+
   const promptFiles: string[] = [];
 
   for (let i = 0; i < imgCount; i++) {
