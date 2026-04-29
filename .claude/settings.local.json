@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd /d/AI/00work && bun run --bun tsc --noEmit 2>&1 | grep \"doc-export\\\\|shared/docx\\\\|shared/prompts\\\\|shared/chinese\" | head -10)",
+      "WebSearch",
+      "WebFetch(domain:slideworks.io)",
+      "WebFetch(domain:slidemodel.com)",
+      "Bash(cd /d/AI/00work && bun skills/ppt-outline/scripts/main.ts --dir workspace/test_ppt 2>&1)"
+    ]
+  }
+}
